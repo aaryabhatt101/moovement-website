@@ -1,40 +1,16 @@
-// Small, beginner-friendly JS for menu + copy button + year
-(function () {
-  const yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  const menuBtn = document.querySelector(".menu-btn");
-  const mobileNav = document.getElementById("mobileNav");
-
-  if (menuBtn && mobileNav) {
-    menuBtn.addEventListener("click", () => {
-      const isOpen = menuBtn.getAttribute("aria-expanded") === "true";
-      menuBtn.setAttribute("aria-expanded", String(!isOpen));
-      mobileNav.hidden = isOpen;
+(function(){
+  const toggle = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('#site-nav');
+  if(toggle && nav){
+    toggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
     });
-
-    // Close menu when clicking a link
-    mobileNav.addEventListener("click", (e) => {
-      const target = e.target;
-      if (target && target.tagName === "A") {
-        menuBtn.setAttribute("aria-expanded", "false");
-        mobileNav.hidden = true;
-      }
-    });
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }));
   }
-
-  // Copy buttons
-  document.querySelectorAll("[data-copy]").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const text = btn.getAttribute("data-copy");
-      try {
-        await navigator.clipboard.writeText(text);
-        const old = btn.textContent;
-        btn.textContent = "Copied!";
-        setTimeout(() => (btn.textContent = old), 1200);
-      } catch (err) {
-        alert("Copy failed. You can manually copy the text below.");
-      }
-    });
-  });
+  const y = document.getElementById('year');
+  if(y) y.textContent = new Date().getFullYear();
 })();
